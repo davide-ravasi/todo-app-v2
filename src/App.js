@@ -1,26 +1,42 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import {Switch, Route} from "react-router-dom";
+import PrimarySearchAppBar from './components/header/PrimarySearchAppBar.component';
+import {auth, firebase, signInWithGoogle} from './firebase/firebase';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import HomePage from './pages/homepage/homepage.component';
+import Categories from './pages/categories/categories.component';
+import SignInOut from './pages/sign-in-out/sign-in-out.component';
+
+class App extends React.Component {
+  constructor() {
+      super();
+      
+      this.state = {
+          currentUser: null
+      }
+  }
+  componentWillMount() {
+      console.log(auth);
+      
+      auth.onAuthStateChanged(userAuth => {
+          console.log(userAuth);
+          
+      })
+  }
+  render() {
+      return (
+        <div className="App">
+          <PrimarySearchAppBar />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/categories" component={Categories} />
+            <Route path="/sign-in" component={SignInOut} />
+          </Switch>
+        </div>
+      );
+  }
 }
 
 export default App;
