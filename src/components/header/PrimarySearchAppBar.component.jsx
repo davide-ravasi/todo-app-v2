@@ -25,9 +25,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ButtonAppBar = ({history}) => {
+const ButtonAppBar = ({history, user}) => {
   const classes = useStyles();
-
+    
   return (
       <AppBar position="static" className={classes.root}>
         <Container>
@@ -39,8 +39,18 @@ const ButtonAppBar = ({history}) => {
                 <Typography variant="h6" className={classes.title}>
                     Todo List
                 </Typography>
+                <Typography variant="h6" className={classes.title}>
+                    {user && (
+                        <span>Connected as : {user.displayName}</span>
+                    )}
+                </Typography>
                 <Button color="inherit" onClick={() => history.push('/categories')}>Categories</Button>
-                <Button color="inherit" onClick={() => history.push('/sign-in')}>Login</Button>
+                {user && (
+                    <Button color="inherit" onClick={() => history.push('/sign-out')}>Logout</Button>
+                )}
+                {!user && (
+                    <Button color="inherit" onClick={() => history.push('/sign-in')}>Login</Button>
+                )}
             </Toolbar>
         </Container>
       </AppBar>
