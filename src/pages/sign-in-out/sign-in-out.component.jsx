@@ -1,7 +1,8 @@
 import React from 'react';
-import { signInWithGoogle } from '../../firebase/firebase';
+import { auth, signInWithGoogle } from '../../firebase/firebase';
 
 import './sign-in-out.styles.scss';
+import LoginForm from '../../components/login/login';
 
 import ActionBtn from '../../components/action-btn/action-btn.component';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -10,6 +11,8 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 
 class SignInOut extends React.Component {
     constructor(props) {
@@ -21,6 +24,7 @@ class SignInOut extends React.Component {
     }
     
     componentDidMount = () => {
+        console.log(auth.currentUser);
     }
     
     handleClose = () => {
@@ -29,13 +33,17 @@ class SignInOut extends React.Component {
         });
     }
     
-    login = () => {
-        let that = this;
-        signInWithGoogle().then(function(result) {
-            that.setState({
+    openFeedback = (isOpen, msg) => {
+            this.setState({
                 open: true,
                 message: 'You\'re now connected with your Google Account'
-            });
+            });        
+    }
+    
+    login = () => {
+        let that = this;
+        signInWithGoogle().then(function(result) {         
+            that.openFeedback(true, 'You\'re now connected with your Google Account');
         }).catch(function(err) {
             console.log("error in connection. please retry :) ");
         });
@@ -44,7 +52,10 @@ class SignInOut extends React.Component {
     render() {        
         return(
             <div>
-                <h1>Login</h1>                
+                <h1>Login</h1>  
+                 
+                <LoginForm  openFeedback={e => this.openFeedback()}/>
+                
                 <ActionBtn onClick={() => this.login()} color="secondary">
                     <Icon className="fab fa-google"  /> Connect with Google
                 </ActionBtn>

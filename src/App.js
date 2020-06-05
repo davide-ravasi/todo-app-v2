@@ -1,9 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.scss';
 import {Switch, Route} from "react-router-dom";
 import PrimarySearchAppBar from './components/header/PrimarySearchAppBar.component';
-import {auth, firebase, signInWithGoogle} from './firebase/firebase';
+import {auth} from './firebase/firebase';
 
 import HomePage from './pages/homepage/homepage.component';
 import Categories from './pages/categories/categories.component';
@@ -17,18 +16,19 @@ class App extends React.Component {
           currentUser: null
       }
   }
-  componentWillMount() {
-      console.log(auth);
-      
-      auth.onAuthStateChanged(userAuth => {
-          console.log(userAuth);
-          
+  componentWillMount() {      
+      auth.onAuthStateChanged(user => {
+          if(user) {
+              this.setState({
+                  currentUser: user 
+              });    
+          }
       })
   }
   render() {
       return (
         <div className="App">
-          <PrimarySearchAppBar />
+          <PrimarySearchAppBar user={this.state.currentUser} />
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/categories" component={Categories} />
