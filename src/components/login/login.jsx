@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import { spacing } from '@material-ui/system';
 import ActionBtn from '../../components/action-btn/action-btn.component';
-import firebase, { auth } from '../../firebase/firebase';
+import { auth } from '../../firebase/firebase';
 import { withRouter } from "react-router";
 
 const useStyles = makeStyles(theme => ({
@@ -31,8 +30,7 @@ const LoginForm = ({history, openFeedback}) => {
     const handleForm = e => {
         e.preventDefault();
 
-        firebase
-            .auth()
+        auth
             .createUserWithEmailAndPassword(email, password)
             .then(result => {
                 return result.user.updateProfile({
@@ -40,7 +38,13 @@ const LoginForm = ({history, openFeedback}) => {
                 })
             })
             .then(() => {
-                history.push('/');
+                openFeedback(true, 'You\'re now connected with your Email')
+            })
+            .then(() => {
+                //history.push('/');
+                setTimeout(function() {
+                   history.push('/'); 
+                },3000);
             })
             .catch(e => {
                 setErrors(e.message);

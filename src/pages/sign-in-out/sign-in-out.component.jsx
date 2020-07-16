@@ -35,8 +35,8 @@ class SignInOut extends React.Component {
     
     openFeedback = (isOpen, msg) => {
             this.setState({
-                open: true,
-                message: 'You\'re now connected with your Google Account'
+                open: isOpen,
+                message: msg
             });        
     }
     
@@ -54,7 +54,7 @@ class SignInOut extends React.Component {
             <div>
                 <h1>Login</h1>  
                  
-                <LoginForm  openFeedback={e => this.openFeedback()}/>
+                <LoginForm  openFeedback={(bools, msg) => this.openFeedback(bools, msg)}/>
                 
                 <ActionBtn onClick={() => this.login()} color="secondary">
                     <Icon className="fab fa-google"  /> Connect with Google
