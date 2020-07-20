@@ -5,45 +5,19 @@ import './sign-in-out.styles.scss';
 import LoginForm from '../../components/login/login';
 
 import ActionBtn from '../../components/action-btn/action-btn.component';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Icon from '@material-ui/core/Icon';
-import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 
 class SignInOut extends React.Component {
     constructor(props) {
         super(props);
-        
-        this.state = {
-            open: false
-        }
-    }
-    
-    componentDidMount = () => {
-        console.log(auth.currentUser);
-    }
-    
-    handleClose = () => {
-        this.setState({
-            open: false
-        });
-    }
-    
-    openFeedback = (isOpen, msg) => {
-            this.setState({
-                open: isOpen,
-                message: msg
-            });        
     }
     
     login = () => {
         let that = this;
+
         signInWithGoogle().then(function(result) {         
-            that.openFeedback(true, 'You\'re now connected with your Google Account');
+            that.props.openFeedback(true, 'You\'re now connected with your Google Account');
         }).catch(function(err) {
             console.log("error in connection. please retry :) ");
         });
@@ -54,21 +28,11 @@ class SignInOut extends React.Component {
             <div>
                 <h1>Login</h1>  
                  
-                <LoginForm  openFeedback={(bools, msg) => this.openFeedback(bools, msg)}/>
+                <LoginForm  openFeedback={(bools, msg) => this.props.openFeedback(bools, msg)}/>
                 
                 <ActionBtn onClick={() => this.login()} color="secondary">
                     <Icon className="fab fa-google"  /> Connect with Google
                 </ActionBtn>
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center',
-                    }}
-                    open={this.state.open}
-                    autoHideDuration={5000}
-                    onClose={this.handleClose}
-                    message={this.state.message}
-                />
             </div>
         )
     }    

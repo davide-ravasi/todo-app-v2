@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ButtonAppBar = ({history, user, signOut}) => {
+const ButtonAppBar = ({history, user, logout}) => {
     const classes = useStyles();
     
   return (
@@ -46,7 +46,7 @@ const ButtonAppBar = ({history, user, signOut}) => {
                 </Typography>
                 <Button color="inherit" onClick={() => history.push('/categories')}>Categories</Button>
                 {user && (
-                    <Button color="inherit" onClick={() => signOut()}>Logout</Button>
+                    <Button color="inherit" onClick={() => logout()}>Logout</Button>
                 )}
                 {!user && (
                     <Button color="inherit" onClick={() => history.push('/sign-in')}>Login</Button>
