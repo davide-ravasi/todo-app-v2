@@ -1,17 +1,13 @@
 import React from 'react';
-import { auth, signInWithGoogle } from '../../firebase/firebase';
+import { signInWithGoogle } from '../../firebase/firebase';
 
 import './sign-in-out.styles.scss';
 import LoginForm from '../../components/login/login';
 
 import ActionBtn from '../../components/action-btn/action-btn.component';
 import Icon from '@material-ui/core/Icon';
-import Snackbar from '@material-ui/core/Snackbar';
 
 class SignInOut extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     
     login = () => {
         let that = this;

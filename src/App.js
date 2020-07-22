@@ -3,7 +3,7 @@ import './App.scss';
 import {Switch, Route} from "react-router-dom";
 import { withRouter } from "react-router";
 import PrimarySearchAppBar from './components/header/PrimarySearchAppBar.component';
-import {auth} from './firebase/firebase';
+import {auth, addUserToDb} from './firebase/firebase';
 
 import HomePage from './pages/homepage/homepage.component';
 import Categories from './pages/categories/categories.component';
@@ -28,7 +28,9 @@ class App extends React.Component {
           if(user) {
               this.setState({
                   currentUser: user 
-              });    
+              });  
+			
+			 addUserToDb(user); 
           } else {
 			  this.setState({
                   currentUser: null 
