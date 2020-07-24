@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Container from '@material-ui/core/Container';
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 
 import CustomizedInputBase from '../searchInput/searchInput.component';
@@ -17,6 +18,14 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+  },
+  link: {
+      color: '#fff',
+      textDecoration: 'none',
+      transition: '0.25s ease-in-out',
+      '&:hover': {
+          color: '#dedede'
+      }
   },  
   title: {
     flexGrow: 1, 
@@ -37,19 +46,19 @@ const ButtonAppBar = ({history, user, logout}) => {
                 </IconButton>
                 <CustomizedInputBase className={classes.search} />
                 <Typography variant="h6" className={classes.title}>
-                    Todo List
+                    <Link to="/" className={classes.link} >Todo List</Link>
                 </Typography>
                 <Typography variant="h6" className={classes.title}>
                     {user && (
                         <span>Connected as : {user.displayName}</span>
                     )}
                 </Typography>
-                <Button color="inherit" onClick={() => history.push('/categories')}>Categories</Button>
+                <Button color="inherit" onClick={() => history.push('/categories')} className={classes.link}>Categories</Button>
                 {user && (
-                    <Button color="inherit" onClick={() => logout()}>Logout</Button>
+                    <Button color="inherit" onClick={() => logout()} className={classes.link}>Logout</Button>
                 )}
                 {!user && (
-                    <Button color="inherit" onClick={() => history.push('/sign-in')}>Login</Button>
+                    <Button color="inherit" onClick={() => history.push('/sign-in')} className={classes.link}>Login</Button>
                 )}
             </Toolbar>
         </Container>
