@@ -11,46 +11,40 @@ import Categories from './pages/categories/categories.component';
 import SignInOut from './pages/sign-in-out/sign-in-out.component';
 import Snackbar from '@material-ui/core/Snackbar';
 
-import { setOpenFeedback, setCloseFeedback } from './redux/userAction';
+import { setOpenFeedback, setCloseFeedback, setAddUser, setRemoveUser } from './redux/userAction';
 
 
 const mapStateToProps = state => {
     return {
-        message: state.message,
-		open: state.open
+		currentUser: state.manageUser.currentUser,
+        message: state.feedback.message,
+		open: state.feedback.open
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onShowFeedback: (msg) => dispatch(setOpenFeedback(msg)),
-		onCloseFeedback: () => dispatch(setCloseFeedback())
+		onCloseFeedback: () => dispatch(setCloseFeedback()),
+		onAddUser: (user) => dispatch(setAddUser(user)),
+		onRemoveUser: () => dispatch(setRemoveUser())
     }
 }
 
 class App extends React.Component {
   constructor(props) {
       super(props);
-      
-      this.state = {
-          currentUser: null,
-      }
 	  
 	  this.handleClose = this.handleClose.bind(this);
 	  this.logout = this.logout.bind(this);
   }
   componentDidMount() {   
       auth.onAuthStateChanged(user => {
-          if(user) {
-              this.setState({
-                  currentUser: user 
-              });  
-			
+          if(user) {			  
+			 this.props.onAddUser(user);
 			 addUserToDb(user); 
           } else {
-			  this.setState({
-                  currentUser: null 
-              }); 
+			  this.props.onRemoveUser();
 		  }
       });
   }
@@ -66,21 +60,20 @@ class App extends React.Component {
         })
         .catch(function(error) {
             // An error happened
+			this.openFeedback(true, 'An error occur while disconnecting :( ');
         });
     }
 	handleClose() {
-        this.setState({
-            open: false
-        });
 		this.props.onCloseFeedback();
     }
     openFeedback(isOpen, msg) {
 		this.props.onShowFeedback(msg);
     }
   render() {
+	  const { currentUser, message, open } = this.props;
       return (
         <div className="App">
-          <PrimarySearchAppBar user={this.state.currentUser} logout={() => this.logout()} />
+          <PrimarySearchAppBar user={currentUser} logout={() => this.logout()} />
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/categories" component={Categories} />
@@ -92,10 +85,10 @@ class App extends React.Component {
 					vertical: 'bottom',
 					horizontal: 'center',
 				}}
-				open={this.props.open}
+				open={open}
 				autoHideDuration={5000}
 				onClose={this.handleClose}
-				message={this.props.message}
+				message={message}
 			/>
         </div>
       );
