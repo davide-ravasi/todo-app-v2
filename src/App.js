@@ -4,11 +4,29 @@ import {Switch, Route} from "react-router-dom";
 import { withRouter } from "react-router";
 import PrimarySearchAppBar from './components/header/PrimarySearchAppBar.component';
 import {auth, addUserToDb} from './firebase/firebase';
+import { connect } from 'react-redux';
 
 import HomePage from './pages/homepage/homepage.component';
 import Categories from './pages/categories/categories.component';
 import SignInOut from './pages/sign-in-out/sign-in-out.component';
 import Snackbar from '@material-ui/core/Snackbar';
+
+import { setOpenFeedback, setCloseFeedback } from './redux/userAction';
+
+
+const mapStateToProps = state => {
+    return {
+        message: state.message,
+		open: state.open
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onShowFeedback: (msg) => dispatch(setOpenFeedback(msg)),
+		onCloseFeedback: () => dispatch(setCloseFeedback())
+    }
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -16,8 +34,6 @@ class App extends React.Component {
       
       this.state = {
           currentUser: null,
-		  open: false,
-          message: ''
       }
 	  
 	  this.handleClose = this.handleClose.bind(this);
@@ -56,12 +72,10 @@ class App extends React.Component {
         this.setState({
             open: false
         });
+		this.props.onCloseFeedback();
     }
     openFeedback(isOpen, msg) {
-		this.setState({
-			open: isOpen,
-			message: msg
-		});        
+		this.props.onShowFeedback(msg);
     }
   render() {
       return (
@@ -78,14 +92,15 @@ class App extends React.Component {
 					vertical: 'bottom',
 					horizontal: 'center',
 				}}
-				open={this.state.open}
+				open={this.props.open}
 				autoHideDuration={5000}
 				onClose={this.handleClose}
-				message={this.state.message}
+				message={this.props.message}
 			/>
         </div>
       );
   }
 }
 
-export default withRouter(App);
+//export default withRouter(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
