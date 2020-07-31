@@ -1,4 +1,6 @@
 import { 
+	ADD_USER,
+	REMOVE_USER,
 	OPEN_FEEDBACK,
 	CLOSE_FEEDBACK
 } from './actionTypes.js';
@@ -10,6 +12,16 @@ export const setOpenFeedback = (msg) => ({
 
 export const setCloseFeedback = () => ({
     type: CLOSE_FEEDBACK,
+    payload: ''    
+})
+
+export const setAddUser = (user) => ({
+    type: ADD_USER,
+    payload: user    
+})
+
+export const setRemoveUser = () => ({
+    type: REMOVE_USER,
     payload: ''    
 })
 /* when it returns a function and not a state it pass through 

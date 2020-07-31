@@ -1,4 +1,6 @@
 import { 
+	ADD_USER,
+	REMOVE_USER,
 	OPEN_FEEDBACK,
 	CLOSE_FEEDBACK
 } from '../actionTypes.js';
@@ -14,6 +16,21 @@ export const feedback = (state=initialStateFeedback, action={}) => {
             return Object.assign({}, state, { open: true, message: action.payload });
 		 case CLOSE_FEEDBACK:
             return Object.assign({}, state, { open: false, message: '' });	
+        default:
+            return state;
+    }
+}
+
+const initialStateUser = {
+	currentUser: false
+}
+
+export const manageUser = (state=initialStateUser, action={}) => {
+    switch(action.type) {
+         case ADD_USER:
+            return Object.assign({}, state, { currentUser: action.payload });
+		case REMOVE_USER:
+			return Object.assign({}, state, { currentUser: null})
         default:
             return state;
     }

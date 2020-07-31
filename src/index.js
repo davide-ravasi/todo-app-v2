@@ -7,13 +7,13 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from 'react-redux';
 import logger from 'redux-logger'
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { feedback } from './redux/reducers/userReducer';
+import { feedback, manageUser } from './redux/reducers/userReducer';
 
-//const rootReducer = combineReducers({ feedback });
+const rootReducer = combineReducers({ feedback, manageUser });
 
 // const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
 
-const store = createStore(feedback, applyMiddleware(logger));
+const store = createStore(rootReducer, applyMiddleware(logger));
 
 ReactDOM.render(
     <Provider store={store}>
