@@ -4,11 +4,23 @@ import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from 'react-redux';
+import logger from 'redux-logger'
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { feedback } from './redux/reducers/userReducer';
+
+//const rootReducer = combineReducers({ feedback });
+
+// const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
+
+const store = createStore(feedback, applyMiddleware(logger));
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>,
   document.getElementById('root')
 );
 

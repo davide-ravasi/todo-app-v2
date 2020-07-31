@@ -16,6 +16,7 @@ class SignInOut extends React.Component {
             that.props.openFeedback(true, 'You\'re now connected with your Google Account');
         }).catch(function(err) {
             console.log("error in connection. please retry :) ");
+            console.log(err);
         });
     }
     
